@@ -1,175 +1,172 @@
-# Week 06 — Malware Analysis Case Study: WannaCry
+# Week 06 — Malware Analysis Case Study: DarkComet RAT
 
 ---
 
 # Ringkasan
 
-Pada pertemuan keenam, saya mulai mempelajari penerapan **Reverse Engineering** secara lebih praktis melalui **Malware Analysis**. Materi ini membahas bagaimana malware dapat dianalisis menggunakan kombinasi **Static Analysis** dan **Dynamic Analysis** untuk memahami karakteristik, perilaku, serta dampaknya terhadap sistem.
+Pada pertemuan minggu keenam, saya mempelajari penerapan Reverse Engineering secara praktis melalui studi kasus malware. Materi ini berfokus pada proses analisis malware menggunakan kombinasi **Static Analysis** dan **Dynamic Analysis** untuk memahami perilaku, fungsi, dan dampak dari program berbahaya.
 
-Studi kasus yang digunakan adalah **WannaCry**, salah satu ransomware paling terkenal yang menyebabkan serangan siber berskala global pada tahun 2017. Melalui analisis terhadap WannaCry, saya memahami bahwa reverse engineering memiliki peran yang sangat penting dalam mengidentifikasi ancaman, memahami mekanisme serangan, serta membantu proses mitigasi dan respons terhadap insiden keamanan.
+Studi kasus yang digunakan pada minggu ini adalah **DarkComet RAT (Remote Access Trojan)**, salah satu malware yang digunakan untuk mengendalikan sistem korban dari jarak jauh. Melalui analisis ini, saya memahami bagaimana sebuah RAT bekerja dalam memberikan akses penuh kepada attacker terhadap sistem target tanpa sepengetahuan korban.
 
 ---
 
 # Pembahasan Materi
 
-## 1. Pengertian Malware Analysis
+## 1. Apa Itu Malware Analysis?
 
-**Malware Analysis** adalah proses menganalisis perangkat lunak berbahaya (malware) untuk memahami bagaimana malware tersebut bekerja, tujuan pembuatannya, serta dampak yang dapat ditimbulkan terhadap sistem yang terinfeksi.
+**Malware Analysis** adalah proses menganalisis perangkat lunak berbahaya untuk memahami:
 
-Beberapa tujuan utama malware analysis meliputi:
+- Cara kerja malware
+- Tujuan malware dibuat
+- Teknik serangan yang digunakan
+- Dampak terhadap sistem
 
-- Memahami cara kerja malware.
-- Mengidentifikasi teknik serangan yang digunakan.
-- Mengetahui kemampuan dan tujuan malware.
-- Mendukung proses mitigasi serta incident response.
-- Menghasilkan indikator kompromi (*Indicators of Compromise* / IOC).
+Tujuan utama dari malware analysis adalah untuk mengidentifikasi ancaman, memahami perilaku malware, serta membantu proses mitigasi dan respons insiden keamanan.
 
-Dalam praktiknya, malware analysis dilakukan menggunakan dua pendekatan utama, yaitu:
+Dalam praktiknya, malware analysis dilakukan menggunakan dua pendekatan utama:
 
-- **Static Analysis**, yaitu analisis tanpa menjalankan malware.
-- **Dynamic Analysis**, yaitu analisis dengan mengamati perilaku malware ketika dijalankan pada lingkungan yang aman.
-
-Kedua metode tersebut saling melengkapi sehingga menghasilkan pemahaman yang lebih komprehensif mengenai suatu malware.
+- Static Analysis (analisis tanpa eksekusi)
+- Dynamic Analysis (analisis saat program berjalan)
 
 ---
 
-## 2. Mengenal WannaCry
+## 2. Mengenal DarkComet RAT
 
-**WannaCry** merupakan ransomware yang menargetkan sistem operasi Windows dengan memanfaatkan kerentanan pada layanan **SMB (Server Message Block)**. Setelah berhasil menginfeksi sistem, malware akan mengenkripsi berbagai file milik korban dan menampilkan permintaan tebusan (*ransom*) dalam bentuk cryptocurrency agar file dapat dipulihkan.
+**DarkComet RAT** adalah jenis malware **Remote Access Trojan** yang memungkinkan attacker untuk mengontrol komputer korban dari jarak jauh.
 
-Secara umum, alur serangan WannaCry dapat digambarkan sebagai berikut:
+Kemampuan umum DarkComet RAT meliputi:
+
+- Mengambil kontrol penuh sistem korban
+- Keylogging (mencatat input keyboard)
+- Mengakses webcam dan mikrofon
+- Mengambil file dari sistem korban
+- Menjalankan command pada sistem target
+- Monitoring aktivitas pengguna
+
+Alur kerja umum DarkComet RAT:
 
 ```text
-System Infection
-       │
-       ▼
-Exploit Vulnerability
-       │
-       ▼
-Payload Execution
-       │
-       ▼
-File Encryption
-       │
-       ▼
-Ransom Demand
+Infection
+   │
+   ▼
+Persistence Establishment
+   │
+   ▼
+Remote Connection to Attacker
+   │
+   ▼
+System Control (RAT Panel)
+   │
+   ▼
+Data Exfiltration / Surveillance
 ```
-
-Kasus WannaCry menjadi salah satu contoh penting dalam pembelajaran reverse engineering karena memperlihatkan bagaimana sebuah malware dapat menggabungkan eksploitasi kerentanan, mekanisme penyebaran, persistence, dan proses enkripsi file dalam satu rangkaian serangan.
 
 ---
 
-## 3. Static Analysis pada WannaCry
+## 3. Static Analysis pada DarkComet RAT
 
-Pada tahap **Static Analysis**, malware dianalisis tanpa dijalankan sehingga proses analisis lebih aman dan tidak menimbulkan risiko terhadap sistem.
+Pada tahap static analysis, saya menganalisis file malware tanpa menjalankannya untuk melihat struktur dan indikasi perilaku.
 
-Beberapa aspek yang dianalisis meliputi:
+Hal yang dianalisis meliputi:
 
-- Struktur file executable.
-- Strings yang tersimpan di dalam binary.
-- Import Table.
-- Referensi fungsi (*Function References*).
+- Strings dalam binary
+- Import table
+- Struktur file executable
+- Referensi fungsi
 
-Melalui analisis tersebut ditemukan beberapa string yang menunjukkan karakteristik ransomware, antara lain:
+Beberapa indikasi yang ditemukan pada RAT umumnya:
 
-- `.WNCRY`
-- `taskse.exe`
-- `mssecsvc.exe`
+- Koneksi jaringan (socket communication)
+- Fungsi keylogging
+- API Windows untuk system control
+- Fungsi persistence (startup / registry)
 
-Keberadaan string tersebut memberikan petunjuk mengenai proses enkripsi file, penggunaan service Windows, serta berbagai komponen internal malware.
-
-Static analysis juga membantu memperoleh gambaran awal mengenai kemampuan malware sebelum dilakukan analisis yang lebih mendalam.
+Static analysis membantu mengidentifikasi bahwa malware memiliki kemampuan remote access dan monitoring sistem.
 
 ---
 
 ## 4. Import Analysis
 
-Salah satu bagian penting dalam static analysis adalah **Import Analysis**, yaitu proses mengidentifikasi library dan fungsi (*API*) yang digunakan oleh malware.
+Import table pada DarkComet RAT menunjukkan penggunaan API yang berhubungan dengan:
 
-Beberapa library yang ditemukan antara lain:
+- Network communication (Winsock)
+- File manipulation
+- System control
+- Process management
 
-- `KERNEL32.dll`
-- `USER32.dll`
-- `ADVAPI32.dll`
-- `MSVCRT.dll`
+Beberapa contoh fungsi yang relevan:
 
-Selain itu, ditemukan pula beberapa fungsi penting seperti:
+- `WSAStartup()`
+- `socket()`
+- `connect()`
+- `send()` / `recv()`
+- `CreateProcess()`
+- `WriteFile()` / `ReadFile()`
+- `RegSetValueEx()`
 
-- `CreateServiceA()`
-- `OpenServiceA()`
-- `StartServiceA()`
-- `fopen()`
-- `fread()`
-- `fwrite()`
+Dari import ini dapat disimpulkan bahwa DarkComet RAT memiliki kemampuan:
 
-Dari fungsi-fungsi tersebut dapat disimpulkan bahwa malware memiliki kemampuan untuk:
-
-- Membuat dan menjalankan service baru.
-- Mengakses service Windows.
-- Membaca file dari sistem.
-- Menulis atau memodifikasi file.
-- Mengelola proses penyimpanan data.
-
-Import analysis memberikan gambaran mengenai kemampuan malware bahkan sebelum malware dijalankan secara langsung.
+- Membuat koneksi jaringan ke attacker
+- Mengirim dan menerima data
+- Menjalankan perintah dari remote
+- Memodifikasi sistem untuk persistence
 
 ---
 
-## 5. Dynamic Analysis pada WannaCry
+## 5. Dynamic Analysis pada DarkComet RAT
 
-Selain static analysis, materi minggu ini juga membahas **Dynamic Analysis**, yaitu proses mengamati perilaku malware ketika dijalankan pada lingkungan yang aman (*sandbox*).
+Pada tahap dynamic analysis, malware dijalankan di lingkungan virtual yang aman (sandbox) untuk mengamati perilakunya secara langsung.
 
-Tahapan analisis yang dilakukan meliputi:
+Tahapan analisis:
 
-1. Menyiapkan virtual environment.
-2. Menjalankan malware di lingkungan terisolasi.
-3. Mengamati aktivitas sistem.
-4. Memonitor komunikasi jaringan.
-5. Mendokumentasikan seluruh hasil analisis.
+1. Menyiapkan virtual machine
+2. Menjalankan malware sample
+3. Monitoring proses aktif
+4. Monitoring network traffic
+5. Observasi perubahan sistem
 
-Selama proses tersebut, beberapa perilaku yang dapat diamati antara lain:
+Perilaku yang biasanya diamati:
 
-- Perubahan pada file system.
-- Aktivitas service Windows.
-- Modifikasi registry.
-- Komunikasi jaringan yang mencurigakan.
-- Proses enkripsi file.
+- Koneksi ke IP eksternal (C2 server)
+- Pembuatan proses baru
+- Aktivitas keylogging
+- Perubahan registry untuk persistence
+- Aktivitas file transfer
 
-Dynamic analysis berfungsi untuk memvalidasi temuan yang diperoleh dari static analysis sekaligus memperlihatkan perilaku malware secara nyata selama proses eksekusi.
+Dynamic analysis membantu memvalidasi hasil static analysis dengan melihat perilaku nyata malware saat berjalan.
 
 ---
 
 ## 6. Indicators of Compromise (IOC)
 
-Hasil analisis malware menghasilkan berbagai **Indicators of Compromise (IOC)**, yaitu indikator yang dapat digunakan untuk mendeteksi keberadaan malware pada suatu sistem.
+Dari hasil analisis DarkComet RAT, beberapa IOC yang dapat ditemukan antara lain:
 
-Beberapa IOC yang berhasil diidentifikasi meliputi:
+- Koneksi ke IP asing (Command & Control server)
+- Aktivitas network tidak normal
+- Proses berjalan di background tanpa UI jelas
+- Modifikasi registry startup
+- Aktivitas keylogging
+- Transfer data keluar sistem (exfiltration)
 
-- File korban yang telah terenkripsi.
-- Perubahan pada Windows Registry.
-- Pembuatan service baru.
-- Aktivitas jaringan yang tidak normal.
-- Perubahan struktur file pada sistem.
-
-IOC menjadi informasi yang sangat penting bagi tim keamanan karena dapat digunakan sebagai dasar dalam proses deteksi, investigasi, maupun penanganan insiden keamanan.
+IOC ini penting untuk mendeteksi keberadaan RAT dalam sistem yang sudah terinfeksi.
 
 ---
 
-# Diagram Workflow Malware Analysis
+# Diagram Malware Analysis Workflow
 
 ```mermaid
 flowchart LR
 
-A[Malware Sample]
-A --> B[Static Analysis]
+A[DarkComet RAT Sample] --> B[Static Analysis]
 A --> C[Dynamic Analysis]
 
-B --> D[Structure Analysis]
-B --> E[Import Analysis]
+B --> D[String & Import Analysis]
+B --> E[Structure Analysis]
 
 C --> F[Behavior Analysis]
-C --> G[Network Analysis]
+C --> G[Network Monitoring]
 
-D --> H[IOC Detection]
+D --> H[IOC Identification]
 E --> H
 F --> H
 G --> H
@@ -177,24 +174,11 @@ G --> H
 
 ---
 
-# Hal Baru yang Saya Pelajari
-
-Beberapa konsep baru yang saya pelajari pada minggu ini antara lain:
-
-- Perbedaan antara Static Analysis dan Dynamic Analysis.
-- Tahapan analisis malware menggunakan lingkungan yang aman.
-- Cara membaca strings dan import table untuk memahami kemampuan malware.
-- Pentingnya API Windows dalam mengidentifikasi fungsi malware.
-- Konsep Indicators of Compromise (IOC) sebagai dasar deteksi ancaman.
-- Penerapan reverse engineering dalam investigasi ransomware.
-
----
-
 # Insight Minggu Ini
 
-Materi minggu keenam memberikan gambaran nyata mengenai penerapan reverse engineering dalam dunia keamanan siber. Saya memahami bahwa malware analysis bukan sekadar membongkar file executable, tetapi juga bertujuan memahami bagaimana malware bekerja, bagaimana malware menyebar, serta bagaimana dampaknya terhadap sistem yang menjadi target.
+Dari materi minggu ini, saya memahami bahwa DarkComet RAT merupakan contoh nyata bagaimana malware dapat digunakan untuk mengambil alih kontrol sistem korban secara penuh dari jarak jauh.
 
-Studi kasus WannaCry menunjukkan bahwa kombinasi antara static analysis dan dynamic analysis mampu menghasilkan informasi yang jauh lebih lengkap dibandingkan hanya menggunakan satu metode analisis saja. Saya juga menyadari bahwa hasil analisis malware sangat bermanfaat dalam membantu proses deteksi, mitigasi, dan respons terhadap serangan siber.
+Saya juga memahami bahwa kombinasi static analysis dan dynamic analysis sangat penting untuk memahami kemampuan RAT, terutama karena sebagian besar aktivitasnya berkaitan dengan jaringan dan sistem operasi secara langsung.
 
 ---
 
@@ -204,6 +188,7 @@ Studi kasus WannaCry menunjukkan bahwa kombinasi antara static analysis dan dyna
 - PE-bear
 - Wireshark
 - Process Monitor
+- x64dbg
 - VirtualBox
 
 ---
@@ -212,16 +197,18 @@ Studi kasus WannaCry menunjukkan bahwa kombinasi antara static analysis dan dyna
 
 ## Apa yang Saya Pahami
 
-Setelah mempelajari materi minggu keenam, saya memahami bahwa malware analysis merupakan salah satu penerapan utama reverse engineering dalam bidang cybersecurity. Saya mengetahui bagaimana proses analisis dilakukan mulai dari membaca struktur internal malware hingga mengamati perilakunya selama dijalankan di lingkungan yang aman.
+Saya memahami bahwa DarkComet RAT bekerja dengan membangun koneksi ke attacker dan memberikan akses penuh terhadap sistem korban. Saya juga memahami bahwa analisis strings, import table, dan network traffic sangat penting dalam mengidentifikasi perilaku RAT.
 
-Saya juga memahami bahwa informasi seperti strings, import table, aktivitas sistem, serta komunikasi jaringan dapat digunakan untuk mengidentifikasi karakteristik dan kemampuan suatu malware.
+---
 
 ## Apa yang Masih Membingungkan
 
-Saya masih ingin mempelajari bagaimana malware modern menggunakan teknik **obfuscation**, **packing**, maupun **anti-analysis** untuk menghindari proses reverse engineering. Selain itu, saya juga ingin memahami analisis malware yang dilakukan pada level memori (*memory analysis*) serta teknik analisis terhadap perilaku malware selama runtime yang lebih kompleks.
+Saya masih ingin memahami lebih dalam bagaimana RAT modern melakukan bypass antivirus serta teknik obfuscation yang digunakan untuk menyembunyikan komunikasi dengan command and control server.
+
+---
 
 ## Kesimpulan Pribadi
 
-Materi minggu keenam memberikan pengalaman yang sangat menarik karena saya mulai melihat bagaimana teori reverse engineering diterapkan secara langsung dalam analisis malware. Studi kasus WannaCry menunjukkan bahwa pemahaman mengenai struktur executable, import analysis, serta perilaku program sangat membantu dalam mengidentifikasi ancaman keamanan. Materi ini semakin memperkuat pemahaman saya bahwa reverse engineering memiliki peran yang sangat penting dalam mendukung proses deteksi, investigasi, dan mitigasi serangan siber.
+Materi minggu keenam memberikan pemahaman yang lebih nyata mengenai ancaman malware jenis RAT. Dari studi kasus DarkComet, saya memahami bahwa reverse engineering sangat penting dalam mendeteksi dan menganalisis malware yang berfokus pada kontrol jarak jauh dan pencurian data.
 
 ---
