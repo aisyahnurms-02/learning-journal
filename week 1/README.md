@@ -1,86 +1,191 @@
-Week 01 — Pengenalan, Ruang Lingkup, Sejarah, serta Aspek Etika dan Legalitas Reverse Engineering
-Ringkasan
-Pada minggu pertama, saya mempelajari fondasi awal dari mata kuliah Reverse Engineering (RE). Materi ini memberikan pengenalan komprehensif mengenai definisi, ruang lingkup, perkembangan sejarah, hingga batasan etika dan hukum yang mengatur aktivitas rekayasa balik ini, baik secara internasional maupun dalam konteks regulasi di Indonesia.
+# Week 01 — Pengenalan, Ruang Lingkup, Sejarah, serta Aspek Etika dan Legalitas Reverse Engineering
 
-Melalui materi ini, saya menyadari bahwa reverse engineering bukan sekadar aktivitas teknis membongkar aplikasi, melainkan sebuah metodologi sistematis yang memerlukan pemahaman etika yang kuat. Pengetahuan regulasi seperti DMCA dan UU ITE menjadi batasan penting agar keahlian yang diperoleh selama satu semester ke depan tetap berada pada koridor hukum yang aman dan bertanggung jawab.
+---
 
-Materi yang Dipelajari
-1. Apa itu Reverse Engineering dan Ruang Lingkupnya?
-Secara umum, rekayasa balik (reverse engineering) adalah proses menganalisis suatu sistem untuk mengidentifikasi komponen-komponennya dan hubungan antar komponen tersebut, guna membuat representasi sistem dalam bentuk lain atau pada tingkat abstraksi yang lebih tinggi. Berbeda dengan Forward Engineering yang merancang sistem dari spesifikasi menjadi produk jadi, RE bergerak dari produk jadi ke belakang untuk memahami desain dan logikanya.
+# Ringkasan
 
-Alur perbandingannya dapat digambarkan sebagai berikut:
+Pada pertemuan pertama, saya mempelajari fondasi dasar **Reverse Engineering (RE)** sebagai langkah awal untuk memahami proses analisis perangkat lunak dan sistem secara menyeluruh. Materi ini membahas pengertian reverse engineering, ruang lingkup penerapannya, sejarah perkembangannya, serta aspek etika dan legalitas yang harus dipahami sebelum mempelajari teknik-teknik yang lebih mendalam.
 
-Plaintext
-Forward Engineering:
-Kebutuhan (Requirements) ──► Desain & Kode Sumber ──► Produk Jadi (Biner)
+Melalui materi ini, saya memahami bahwa reverse engineering bukan sekadar aktivitas membongkar suatu aplikasi atau perangkat lunak, tetapi merupakan proses analisis yang sistematis untuk memahami cara kerja suatu sistem tanpa memiliki source code aslinya. Selain itu, saya juga belajar bahwa kemampuan teknis dalam reverse engineering harus selalu diimbangi dengan pemahaman mengenai regulasi hukum dan etika profesi agar praktik yang dilakukan tetap legal dan bertanggung jawab.
 
-Reverse Engineering:
-Produk Jadi (Biner) ──► Analisis & Disassembly ──► Abstraksi Logika / Kode Sumber
-Dalam dunia Teknik Komputer, ruang lingkup RE mencakup analisis perangkat keras (hardware), protokol jaringan, hingga perangkat lunak (software binary analysis) untuk tujuan interoperabilitas, audit keamanan, maupun analisis malware.
+---
 
-2. Sejarah Singkat Reverse Engineering
-Aktivitas reverse engineering awalnya berkembang pesat di industri manufaktur dan militer secara fisik (hardware), di mana suatu negara atau perusahaan membongkar perangkat mekanik milik kompetitor untuk memahami cara kerjanya. Seiring berkembangnya komputer, RE bergeser ke ranah digital dan software, terutama dipicu oleh kebutuhan interkoneksi sistem antar vendor yang berbeda pada era awal komputasi.
+# Pembahasan Materi
 
-Kini, sejarah tersebut berevolusi menjadikan RE sebagai fondasi utama pertahanan siber modern, khususnya dalam membedah malware baru yang belum memiliki signature, serta menemukan celah keamanan (vulnerability research) sebelum dieksploitasi oleh pihak yang tidak bertanggung jawab.
+## 1. Pengertian Reverse Engineering dan Ruang Lingkupnya
 
-3. Aspek Hukum dan Legalitas (DMCA dan UU ITE)
-One of the most crucial points on this week was understanding the legality of RE. Di ranah internasional, aktivitas ini bersinggungan dengan Digital Millennium Copyright Act (DMCA) dan lisensi perangkat lunak (EULA), yang umumnya melarang rekayasa balik demi melindungi hak kekayaan intelektual.
+Reverse engineering merupakan proses menganalisis suatu sistem untuk mengidentifikasi komponen-komponen penyusunnya, hubungan antar komponen tersebut, serta memahami bagaimana sistem bekerja secara keseluruhan. Hasil dari proses ini dapat berupa representasi sistem dalam bentuk yang lebih mudah dipahami atau berada pada tingkat abstraksi yang lebih tinggi.
 
-Namun, hukum menyediakan pengecualian khusus (safe harbors) untuk tujuan tertentu:
+Berbeda dengan **Forward Engineering**, yang dimulai dari kebutuhan pengguna hingga menghasilkan produk akhir, reverse engineering memulai proses analisis dari produk yang telah jadi kemudian menelusuri kembali logika maupun desain pembangunnya.
 
-Interoperabilitas: Membuat dua perangkat lunak berbeda agar dapat saling berkomunikasi dan terintegrasi.
+Perbandingan alur keduanya dapat digambarkan sebagai berikut:
 
-Keamanan Sistem: Melakukan riset kerentanan demi meningkatkan proteksi sistem itu sendiri.
+```text
+Forward Engineering
 
-Di Indonesia, aktivitas ini diatur secara beririsan dalam UU ITE (Undang-Undang Informasi dan Transaksi Elektronik). Melakukan akses ilegal atau memodifikasi sistem tanpa hak adalah pelanggaran pidana, sehingga reverse engineering wajib dilakukan pada sistem milik sendiri, sampel malware di lingkungan terisolasi, atau sistem yang telah mendapatkan izin tertulis (seperti dalam lingkup Bug Bounty).
+Requirements
+      │
+      ▼
+Design & Source Code
+      │
+      ▼
+Executable / Binary
+```
 
-4. Etika dalam Reverse Engineering
-Selain aspek hukum tertulis, seorang analis keamanan harus memegang teguh etika profesi. Materi minggu ini mengenalkan konsep Responsible Disclosure (pengungkapan yang bertanggung jawab), yaitu etika ketika seorang Reverse Engineer menemukan celah keamanan pada suatu produk.
+```text
+Reverse Engineering
 
-Langkah etisnya adalah melaporkan temuan tersebut secara privat kepada vendor pembuat aplikasi, memberikan waktu bagi mereka untuk memperbaikinya (patching), baru kemudian mempublikasikannya ke publik untuk edukasi. Praktik ini didukung oleh ekosistem modern melalui program Bug Bounty, di mana analis diberikan kompensasi finansial atas kerentanan yang mereka laporkan secara legal.
+Executable / Binary
+        │
+        ▼
+Analysis & Disassembly
+        │
+        ▼
+Logic Abstraction / Source Code Representation
+```
 
-5. Kaitan RE dengan Industri Modern & Keamanan
-Di akhir sesi perkenalan, dijelaskan bahwa RE merupakan core skill di bidang keamanan siber saat ini. Implementasinya meliputi:
+Dalam bidang Teknik Komputer, reverse engineering memiliki ruang lingkup yang luas, meliputi:
 
-Malware Analysis: Membongkar file biner jahat untuk mengetahui dampaknya tanpa perlu menjalankannya di sistem produksi.
+- Analisis perangkat lunak (Software Binary Analysis)
+- Analisis perangkat keras (Hardware Reverse Engineering)
+- Analisis protokol jaringan
+- Malware Analysis
+- Vulnerability Research
+- Interoperabilitas antar sistem
 
-Vulnerability Research: Mencari kelemahan pada aplikasi komersial atau open-source guna memperkuat pertahanan sebelum dieksploitasi pelaku kriminal siber.
+Penerapan tersebut menjadikan reverse engineering sebagai salah satu kompetensi penting dalam dunia keamanan siber modern.
 
-Capture The Flag (CTF): Sebagai sarana kompetisi dan asah kemampuan (gamification) memecahkan teka-teki logika biner.
+---
 
-Hal Baru yang Saya Pelajari
-Beberapa konsep baru yang saya peroleh pada minggu ini adalah:
+## 2. Sejarah Perkembangan Reverse Engineering
 
-Perbedaan mendasar alur kerja antara Forward Engineering dan Reverse Engineering.
+Reverse engineering telah berkembang sejak lama, bahkan sebelum era komputer modern. Pada awalnya, teknik ini banyak digunakan dalam industri manufaktur dan militer untuk membongkar produk atau perangkat milik kompetitor guna memahami desain serta teknologi yang digunakan.
 
-Batasan hukum internasional (DMCA) dan domestik (UU ITE) terkait pembongkaran software.
+Seiring berkembangnya teknologi informasi, reverse engineering mulai diterapkan pada perangkat lunak dan sistem komputer. Kebutuhan akan interoperabilitas antar sistem dari vendor yang berbeda menjadi salah satu faktor yang mendorong perkembangan teknik ini.
 
-Pentingnya prinsip Responsible Disclosure saat menemukan celah keamanan pada produk masal.
+Saat ini reverse engineering telah menjadi bagian penting dalam dunia cybersecurity, khususnya untuk:
 
-Pembagian ekosistem kompensasi legal melalui platform Bug Bounty.
+- Menganalisis malware baru yang belum dikenali antivirus.
+- Menemukan celah keamanan pada suatu aplikasi.
+- Memahami mekanisme kerja software proprietary.
+- Mendukung proses digital forensics.
 
-Konsep dasar interoperabilitas sebagai alasan hukum diizinkannya aktivitas RE.
+Perkembangan tersebut menunjukkan bahwa reverse engineering kini tidak hanya digunakan untuk memahami suatu produk, tetapi juga sebagai sarana meningkatkan keamanan sistem informasi.
 
-Insight Minggu Ini
-Materi perkenalan minggu ini mengubah total perspektif saya mengenai reverse engineering. Awalnya saya mengira aktivitas ini ilegal dan identik dengan pembajakan perangkat lunak (cracking), namun ternyata RE adalah ilmu sains yang sah, legal, dan sangat krusial bagi pertahanan siber jika dilakukan dengan niat dan prosedur yang benar.
+---
 
-Saya juga menyadari pentingnya keseimbangan antara kemampuan teknis tinggi dan tanggung jawab moral. Menjadi seorang Reverse Engineer yang andal berarti harus siap tunduk pada kode etik keamanan sistem, karena alat dan teknik yang sama bisa digunakan untuk merusak (menjadi kriminal) atau melindungi (menjadi analis keamanan).
+## 3. Aspek Hukum dan Legalitas Reverse Engineering
 
-Tools yang Berkaitan
-Platform Bug Bounty (HackerOne, Bugcrowd)
+Salah satu materi yang paling penting pada minggu pertama adalah memahami batasan hukum dalam melakukan reverse engineering.
 
-Dokumen Regulasi (Salinan UU ITE Indonesia, DMCA Exemptions)
+Di tingkat internasional, aktivitas ini berkaitan dengan **Digital Millennium Copyright Act (DMCA)** dan berbagai bentuk lisensi perangkat lunak seperti **End User License Agreement (EULA)**. Pada umumnya, lisensi tersebut membatasi aktivitas pembongkaran perangkat lunak untuk melindungi hak kekayaan intelektual.
 
-Dokumen Lisensi Perangkat Lunak (EULA Analysis)
+Namun demikian, terdapat beberapa pengecualian yang diizinkan secara hukum, antara lain:
 
-Lingkungan Lab Terisolasi (Virtual Machines dasar)
+### Interoperabilitas
 
-Refleksi Pembelajaran
-Pemahaman Saya
-Materi minggu pertama berhasil memberikan fondasi dan peta jalan (roadmap) yang jelas mengenai apa yang akan saya hadapi satu semester ke depan. Saya kini memahami posisi penting RE dalam siklus hidup software dan keamanan sistem, serta tahu batasan-batasan etis apa saja yang tidak boleh dilanggar sebagai mahasiswa Teknik Komputer.
+Reverse engineering diperbolehkan apabila bertujuan agar dua sistem atau perangkat lunak yang berbeda dapat saling berkomunikasi dan bekerja bersama.
 
-Hal yang Masih Ingin Saya Pelajari
-Saya masih penasaran dan ingin mempelajari lebih dalam kasus-kasus nyata di mana aktivitas reverse engineering berhasil menyelamatkan infrastruktur kritis dari serangan siber besar (seperti kasus Stuxnet atau WannaCry). Selain itu, saya juga ingin memahami bagaimana batasan eksplisit dari pasal-pasal UU ITE di Indonesia ketika kita melakukan riset keamanan pada aplikasi publik secara mandiri.
+### Keamanan Sistem
 
-Kesimpulan Pribadi
-Pertemuan awal ini memberikan kesadaran bahwa reverse engineering bukan sekadar keahlian mengulik baris kode, melainkan sebuah seni menganalisis teknologi dengan pemahaman legalitas yang ketat. Dengan pondasi etika dan hukum yang telah ditanamkan di minggu pertama ini, saya merasa memiliki kompas moral yang tepat untuk mulai mempelajari aspek teknis yang lebih dalam pada pertemuan-pertemuan berikutnya.
+Reverse engineering juga dapat dilakukan untuk melakukan penelitian keamanan (security research) guna menemukan dan memperbaiki kerentanan sebelum dimanfaatkan oleh pihak yang tidak bertanggung jawab.
+
+Di Indonesia, aktivitas reverse engineering berkaitan dengan **Undang-Undang Informasi dan Transaksi Elektronik (UU ITE)**. Akses tanpa izin terhadap suatu sistem atau modifikasi sistem tanpa hak dapat dikategorikan sebagai pelanggaran hukum. Oleh karena itu, reverse engineering sebaiknya dilakukan pada:
+
+- Sistem milik sendiri.
+- Sampel malware pada lingkungan laboratorium yang terisolasi.
+- Sistem yang telah memberikan izin resmi, misalnya melalui program Bug Bounty.
+
+---
+
+## 4. Etika dalam Reverse Engineering
+
+Selain memahami aspek hukum, seorang reverse engineer juga harus menjunjung tinggi etika profesi.
+
+Materi minggu ini memperkenalkan konsep **Responsible Disclosure**, yaitu prosedur etis ketika menemukan suatu kerentanan keamanan.
+
+Tahapan yang dilakukan meliputi:
+
+- Melaporkan kerentanan kepada vendor secara privat.
+- Memberikan waktu kepada pengembang untuk melakukan perbaikan (patching).
+- Mempublikasikan hasil penelitian setelah kerentanan berhasil diperbaiki.
+
+Pendekatan ini bertujuan untuk melindungi pengguna sekaligus memberikan kesempatan kepada pengembang memperbaiki sistem sebelum informasi tersebut diketahui oleh pihak yang dapat menyalahgunakannya.
+
+Konsep tersebut juga menjadi dasar berbagai program **Bug Bounty**, yaitu program penghargaan bagi peneliti keamanan yang berhasil menemukan dan melaporkan kerentanan secara legal.
+
+---
+
+## 5. Reverse Engineering dalam Industri Keamanan Siber
+
+Pada bagian akhir materi dijelaskan bahwa reverse engineering merupakan salah satu kompetensi inti dalam bidang keamanan siber.
+
+Beberapa penerapannya antara lain:
+
+### Malware Analysis
+
+Menganalisis file berbahaya untuk memahami perilaku, teknik penyebaran, serta dampak yang ditimbulkan tanpa menjalankannya pada sistem utama.
+
+### Vulnerability Research
+
+Mencari kelemahan keamanan pada perangkat lunak agar dapat diperbaiki sebelum dimanfaatkan oleh pelaku kejahatan siber.
+
+### Capture The Flag (CTF)
+
+Menggunakan reverse engineering sebagai sarana latihan dan kompetisi untuk meningkatkan kemampuan analisis terhadap file biner dan berbagai tantangan keamanan lainnya.
+
+Penerapan tersebut menunjukkan bahwa reverse engineering memiliki peranan yang sangat besar dalam menjaga keamanan sistem informasi modern.
+
+---
+
+# Diagram Ruang Lingkup Reverse Engineering
+
+```mermaid
+flowchart TD
+
+A[Reverse Engineering]
+A --> B[Software Binary Analysis]
+A --> C[Hardware Analysis]
+A --> D[Network Protocol Analysis]
+A --> E[Malware Analysis]
+A --> F[Vulnerability Research]
+A --> G[Digital Forensics]
+```
+
+---
+
+# Insight Minggu Ini
+
+Materi pada minggu pertama mengubah pemahaman saya mengenai reverse engineering. Sebelumnya saya menganggap aktivitas ini identik dengan pembajakan perangkat lunak atau tindakan ilegal, namun setelah mempelajari materi saya memahami bahwa reverse engineering merupakan disiplin ilmu yang legal apabila dilakukan sesuai tujuan, prosedur, dan ketentuan hukum yang berlaku.
+
+Saya juga menyadari bahwa kemampuan teknis saja tidak cukup untuk menjadi seorang reverse engineer yang baik. Diperlukan pemahaman mengenai etika profesi, tanggung jawab moral, serta kepatuhan terhadap regulasi agar ilmu yang dimiliki dapat digunakan untuk meningkatkan keamanan sistem, bukan untuk merugikan pihak lain.
+
+---
+
+# Tools yang Dipelajari
+
+- Platform Bug Bounty (HackerOne, Bugcrowd)
+- Dokumen Digital Millennium Copyright Act (DMCA)
+- Undang-Undang Informasi dan Transaksi Elektronik (UU ITE)
+- End User License Agreement (EULA)
+- Virtual Machine sebagai lingkungan laboratorium terisolasi
+
+---
+
+# Refleksi Pembelajaran
+
+## Apa yang Saya Pahami
+
+Setelah mempelajari materi minggu pertama, saya memahami bahwa reverse engineering merupakan proses analisis sistem yang dilakukan dari produk jadi menuju pemahaman terhadap desain dan logika pembangunnya. Saya juga memahami bahwa reverse engineering memiliki ruang lingkup yang luas, mulai dari analisis perangkat lunak, perangkat keras, hingga penelitian keamanan siber.
+
+Selain aspek teknis, saya memperoleh pemahaman mengenai pentingnya mematuhi regulasi hukum dan etika profesi, sehingga setiap aktivitas reverse engineering dilakukan secara legal, bertanggung jawab, dan memberikan manfaat bagi keamanan sistem.
+
+## Apa yang Masih Membingungkan
+
+Saya masih ingin mempelajari lebih dalam bagaimana penerapan reverse engineering pada kasus nyata, seperti analisis malware berskala besar maupun investigasi terhadap serangan siber terkenal. Selain itu, saya juga ingin memahami secara lebih rinci implementasi pasal-pasal dalam UU ITE yang berkaitan dengan penelitian keamanan terhadap aplikasi publik.
+
+## Kesimpulan Pribadi
+
+Materi minggu pertama memberikan fondasi yang sangat penting sebelum mempelajari teknik reverse engineering yang lebih kompleks. Saya menyadari bahwa reverse engineering bukan hanya sekadar kemampuan membongkar suatu sistem, tetapi juga membutuhkan pemahaman mengenai aspek hukum, etika, serta tanggung jawab profesional. Dengan bekal tersebut, saya memiliki dasar yang kuat untuk mempelajari proses analisis perangkat lunak secara lebih mendalam pada pertemuan-pertemuan berikutnya.
+
+---
